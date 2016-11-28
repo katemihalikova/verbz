@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <!-- un-comment this code to enable service worker
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('service worker installed'))
+          .catch(err => console.log('Error', err));
+      }
+    </script>-->
+
+
+    <!-- compiled css output -->
+    <link href="css/ionic.app.css" rel="stylesheet">
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/verbs.js"></script>
+    <script src="js/i18n.js"></script>
+  </head>
+  <body ng-app="verbz">
+    <ion-pane>
+      <ion-header-bar class="bar-assertive">
+        <h1 class="title">English verbs quiz</h1>
+        <div class="badge badge-light" style="line-height: 2; margin-left: auto;">{{right}}/{{total}}</div>
+      </ion-header-bar>
+      <ion-content>
+        <ion-list ng-form name="form">
+          <ion-item>
+            <div class="h4" style="margin-top: 0;">{{i18n.verbs[currentFrom]}}</div>
+            <div>{{currentVerb[currentFrom].join(', ')}}</div>
+          </ion-item>
+          <label class="item item-input item-stacked-label">
+            <div class="input-label">
+              <div class="h4" style="margin-top: 0;">{{i18n.verbs[currentTo]}}</div>
+            </div>
+            <input type="text" ng-model="$root.answer" name="answer" ng-readonly="!isAnswering" style="background-color: white;">
+          </label>
+          <ion-item class="item-energized item-icon-left text-center" ng-show="isAnswering" ng-click="checkAnswer()">
+            <i class="icon ion-help-circled"></i>
+            {{i18n.answer}}
+          </ion-item>
+          <ion-item class="item-balanced item-icon-left text-center" ng-show="!isAnswering && isOk">
+            <i class="icon ion-happy-outline"></i>
+            {{i18n.right}}
+          </ion-item>
+          <ion-item class="item-assertive item-icon-left text-center" ng-show="!isAnswering && !isOk">
+            <i class="icon ion-sad-outline"></i>
+            {{i18n.wrong}}
+          </ion-item>
+          <ion-item ng-if-start="!isAnswering">
+            <div class="clearfix">
+              <div class="h5" style="float: left; margin-top: 5px;">{{i18n.verbs[0]}}</div>
+              <div style="float: right;">{{currentVerb[0].join(', ')}}</div>
+            </div>
+            <div class="clearfix">
+              <div class="h5" style="float: left;">{{i18n.verbs[1]}}</div>
+              <div style="float: right; margin-top: 5px;">{{currentVerb[1].join(', ')}}</div>
+            </div>
+            <div class="clearfix">
+              <div class="h5" style="float: left;">{{i18n.verbs[2]}}</div>
+              <div style="float: right; margin-top: 5px;">{{currentVerb[2].join(', ')}}</div>
+            </div>
+            <div class="clearfix">
+              <div class="h5" style="float: left;">{{i18n.verbs[3]}}</div>
+              <div style="float: right; margin-top: 5px;">{{currentVerb[3] ? currentVerb[3].join(', ') : '-'}}</div>
+            </div>
+          </ion-item>
+          <ion-item ng-if-end class="item-calm item-icon-left text-center" ng-click="getNextTask()">
+            <i class="icon ion-android-arrow-dropright-circle"></i>
+            {{i18n.next}}
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-pane>
+  </body>
+</html>
